@@ -101,7 +101,7 @@ $(function() {
                 localStorage.setItem('token', res.token);
                 layer.msg('登陆成功！');
 
-                //location.href = "/index.html"; //成功之后跳转到后台主页
+                location.href = "/index.html"; //成功之后跳转到后台主页
 
             }
         })
