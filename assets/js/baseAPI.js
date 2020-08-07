@@ -13,8 +13,28 @@
 var baseURL = 'http://ajax.frontend.itheima.net'; //请求的根路径
 $.ajaxPrefilter(function(options) { //options就是在调ajax的时候传递的配置对象
     // console.log(options.url);
-    // // 在发起真正的 Ajax 请求之前，统一拼接请求的根路径
+    // 1. 在发起真正的 Ajax 请求之前，统一拼接请求的根路径
     options.url = baseURL + options.url;
     console.log(options.url);
 
+    //2.统一为有权限的接口，设置headers请求头  只有url中包含/my/的才加headers
+    if (options.url.indexOf('/my/') !== -1) {
+        options.headers = {
+            Authorization: localStorage.getItem('token') || '',
+        }
+    }
+    //3.全局统一挂载complete函数
+    //jquery中的ajax  不论成功还是失败都会调用complete回调函数,没有登陆是进不去里面的页面的
+    // 在 complete 回调函数中，可以使用 res.responseJSON 拿到服务器响应回来的数据
+    options.complete = function(res) {
+        console.log('执行了complete回调');
+        console.log(res);
+        if (res.responseJSON.status === 1 && res.responseJSON.message === '身份认证失败！') {
+            // 1. 强制清空 token
+            localStorage.removeItem('token');
+            // 2. 强制跳转到登录页面
+            location.href = '/login.html';
+        }
+
+    }
 })
