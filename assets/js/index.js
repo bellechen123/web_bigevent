@@ -28,7 +28,7 @@
          //Authorization: localStorage.getItem('token') || '',
          //},
          success: function(res) {
-             console.log(res);
+             //console.log(res);
              if (res.status !== 0) {
                  return layui.layer.msg('获取用户信息失败！');
 
@@ -56,7 +56,7 @@
 
  //2.渲染用户的名称和头像
  function renderAvatar(user) {
-     //2.1获取用户的名称
+     //2.1获取用户的名称 有昵称先用昵称 没有用用户名
      var name = user.nickname || user.username;
      //console.log(typeof name);//string
      //console.log(name[0]); //字符串获取第一个字符和数组一样使用
@@ -65,7 +65,7 @@
      $('#welcome').html('欢迎&nbsp;&nbsp;' + name);
      //2.3按需渲染用户的头像
      if (user.user_pic !== null) {
-         //渲染图片头像
+         //渲染图片头像  attr可以设置所有的属性  prop固定属性
          $('.layui-nav-img').attr('src', user.user_pic).show();
          $('.text-avatar').hide();
      } else {
